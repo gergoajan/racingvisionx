@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kapcsolat – RacingVisionX</title>
+  <meta name="description" content="Kapcsolat és árajánlatkérés – RacingVisionX." />
+
+  <style>
+    :root{
+      --bg:#05060a;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+
+      --cyan:#96D1DC;
+      --blue:#0972A6;
+      --red:#A10007;
+      --amber:#F7DEA7;
+
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(9,114,166,.25), transparent 55%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(161,0,7,.22), transparent 55%),
+                  radial-gradient(900px 500px at 40% 90%, rgba(150,209,220,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(980px, 92vw); margin:0 auto; }
+
+    .nav{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(5,6,10,.78), rgba(5,6,10,.35));
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:12px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; min-width:220px; }
+    .brand-badge{
+      width:12px; height:12px; border-radius:999px;
+      background: conic-gradient(from 180deg, var(--cyan), var(--blue), var(--red), var(--amber), var(--cyan));
+      box-shadow: 0 0 0 6px rgba(255,255,255,.03);
+    }
+    .menu{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .menu a{
+      color:rgba(255,255,255,.72);
+      padding:8px 10px;
+      border-radius:999px;
+      transition: .2s ease;
+    }
+    .menu a:hover{ color:rgba(255,255,255,.92); background: rgba(255,255,255,.06); }
+    .cta{
+      padding:9px 14px !important;
+      color: rgba(255,255,255,.95) !important;
+      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
+      border: 1px solid rgba(150,209,220,.28);
+      box-shadow: 0 10px 30px rgba(9,114,166,.15);
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    header{ padding: 34px 0 10px; }
+    h1{ margin:0 0 10px; font-size: clamp(26px, 4vw, 38px); }
+    p.lead{ margin:0; color:var(--muted); line-height:1.55; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      padding: 18px 0 26px;
+    }
+    @media (min-width: 900px){
+      .grid{ grid-template-columns: 0.9fr 1.1fr; }
+    }
+
+    .box{ padding: 18px; }
+    .line{ margin: 10px 0; color: var(--muted); }
+    .label{ display:block; font-size:13px; color: rgba(255,255,255,.86); margin-bottom: 6px; }
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.92);
+      outline: none;
+    }
+    textarea{ min-height: 90px; resize: vertical; }
+
+    .row{ display:grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 700px){ .row.two{ grid-template-columns: 1fr 1fr; } }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(150,209,220,.30);
+      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
+      color: rgba(255,255,255,.92);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 6px rgba(150,209,220,.08);
+    }
+
+    .hint{
+      margin-top:10px;
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .ok{
+      margin-top: 14px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(150,209,220,.10);
+      border: 1px solid rgba(150,209,220,.22);
+      color: rgba(255,255,255,.88);
+      display:none;
+    }
+
+    footer{
+      padding: 24px 0 38px;
+      color: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(255,255,255,.07);
+      margin-top: 22px;
+    }
+    .small{ font-size: 13px; }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/index.html">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <strong>RacingVisionX</strong>
+      </a>
+
+      <nav class="menu">
+        <a href="/index.html">Kezdőlap</a>
+        <a class="cta" href="/kapcsolat.html">Kapcsolat</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <header>
+      <h1>Kapcsolat & árajánlatkérés</h1>
+      <p class="lead">Töltsd ki az alap adatokat, és visszajelzünk egy javasolt csomaggal és árral.</p>
+    </header>
+
+    <div class="grid">
+      <section class="card box">
+        <h2 style="margin:0 0 10px; font-size:18px;">Elérhetőségek</h2>
+
+        <div class="line"><b>E-mail:</b> info@racingvisionx.hu</div>
+        <div class="line"><b>Telefon:</b> Hamarosan</div>
+        <div class="line"><b>Város:</b> Budapest</div>
+
+        <p class="hint">
+          Ha nem szeretnél publikus telefonszámot, maradhat csak e-mail + az űrlap.
+        </p>
+      </section>
+
+      <section class="card box">
+        <h2 style="margin:0 0 10px; font-size:18px;">Árajánlatot kérek</h2>
+
+        <!-- TODO: ide írd be a Formspree URL-t, pl.: https://formspree.io/f/abcdwxyz -->
+        <form method="post" action="FORM_ACTION_URL">
+          <div class="row two">
+            <div>
+              <label class="label" for="telepules">Település *</label>
+              <input id="telepules" name="telepules" required placeholder="pl. Budapest" />
+            </div>
+            <div>
+              <label class="label" for="palya_nev">Pálya neve *</label>
+              <input id="palya_nev" name="palya_nev" required placeholder="pl. FlashKart Blaha" />
+            </div>
+          </div>
+
+          <div class="row two" style="margin-top:12px;">
+            <div>
+              <label class="label" for="palya_hossz">Pálya becsült hossza (m) *</label>
+              <input id="palya_hossz" name="palya_hossz" required type="number" min="50" step="1" placeholder="pl. 580" />
+            </div>
+            <div>
+              <label class="label" for="belt_kult">Beltéri / kültéri *</label>
+              <select id="belt_kult" name="belt_kult" required>
+                <option value="" selected disabled>Válassz…</option>
+                <option value="beltéri">Beltéri</option>
+                <option value="kültéri">Kültéri</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row two" style="margin-top:12px;">
+            <div>
+              <label class="label" for="kamera_db">Igényelt kamera darabszám *</label>
+              <input id="kamera_db" name="kamera_db" required type="number" min="1" step="1" placeholder="pl. 6" />
+            </div>
+            <div>
+              <label class="label" for="vezetekes_net">Vezetékes internet elérhető? *</label>
+              <select id="vezetekes_net" name="vezetekes_net" required>
+                <option value="" selected disabled>Válassz…</option>
+                <option value="igen">Igen</option>
+                <option value="nem">Nem</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label class="label" for="megjegyzes">Megjegyzés (opcionális)</label>
+            <textarea id="megjegyzes" name="megjegyzes" placeholder="Pl. TV-k száma, jelenlegi hálózat, nyitvatartás, stb."></textarea>
+          </div>
+
+          <div style="margin-top:14px;">
+            <button class="btn" type="submit">Árajánlatot kérek</button>
+            <div class="hint">
+              Beküldés után e-mailben kapjuk meg az adatokat, és jelentkezünk.
+            </div>
+
+            <div class="ok" id="sentBox">Köszönjük! Az üzenet elküldve.</div>
+          </div>
+        </form>
+
+        <div class="hint">
+          Tipp: ha a Formspree “Thank you” oldalt dob, az normális. Később beállíthatunk saját visszajelzést is.
+        </div>
+      </section>
+    </div>
+
+    <footer class="container">
+      <div class="small">© <span id="y"></span> RacingVisionX</div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Opcionális: ha a Formspree-t beállítod redirectre ide: /kapcsolat.html?sent=1
+    // akkor megjelenítünk egy "köszönjük" dobozt.
+    const params = new URLSearchParams(location.search);
+    if (params.get("sent") === "1") {
+      const el = document.getElementById("sentBox");
+      if (el) el.style.display = "block";
+    }
+  </script>
+</body>
+</html>
