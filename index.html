@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RacingVisionX</title>
+  <meta name="description" content="RacingVisionX – gokart onboard élőkép és felvételrendszer pályáknak." />
+
+  <!-- Opcionális: ha lesz faviconod -->
+  <!-- <link rel="icon" href="favicon.ico" /> -->
+
+  <style>
+    :root{
+      /* LOGÓHOZ ILLŐ AKCENT SZÍNEK (ha akarod, itt finomhangolhatod) */
+      --bg:#05060a;
+      --panel: rgba(255,255,255,.06);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+
+      --cyan:#96D1DC;   /* logó cyan */
+      --blue:#0972A6;   /* logó kék */
+      --red:#A10007;    /* logó piros */
+      --amber:#F7DEA7;  /* logó arany/narancs */
+
+      --ring: rgba(150,209,220,.35);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(9,114,166,.25), transparent 55%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(161,0,7,.22), transparent 55%),
+                  radial-gradient(900px 500px at 40% 90%, rgba(150,209,220,.18), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(1100px, 92vw); margin:0 auto; }
+
+    /* NAV */
+    .nav{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(5,6,10,.78), rgba(5,6,10,.35));
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; min-width:200px;
+    }
+    .brand-badge{
+      width:12px; height:12px; border-radius:999px;
+      background: conic-gradient(from 180deg, var(--cyan), var(--blue), var(--red), var(--amber), var(--cyan));
+      box-shadow: 0 0 0 6px rgba(255,255,255,.03);
+    }
+    .brand strong{ letter-spacing:.4px; }
+    .menu{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .menu a{
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:999px;
+      transition: .2s ease;
+    }
+    .menu a:hover{ color:var(--text); background: rgba(255,255,255,.06); }
+    .cta{
+      padding:9px 14px !important;
+      color: rgba(255,255,255,.95) !important;
+      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
+      border: 1px solid rgba(150,209,220,.28);
+      box-shadow: 0 10px 30px rgba(9,114,166,.15);
+    }
+    .cta:hover{
+      border-color: rgba(150,209,220,.45);
+      box-shadow: 0 14px 40px rgba(150,209,220,.12);
+    }
+
+    /* HERO */
+    .hero{
+      padding: 54px 0 26px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 28px;
+      align-items:center;
+    }
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns:1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{
+      padding: 26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 220px at 30% 10%, rgba(150,209,220,.25), transparent 60%),
+                  radial-gradient(520px 200px at 85% 25%, rgba(161,0,7,.18), transparent 60%);
+      pointer-events:none;
+      filter: blur(2px);
+    }
+    .hero-card > *{ position:relative; }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height:1.05;
+      letter-spacing:.2px;
+    }
+    .lead{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height:1.55;
+    }
+    .pill-row{ display:flex; gap:10px; flex-wrap:wrap; margin: 16px 0 0; }
+    .pill{
+      font-size:13px;
+      color: rgba(255,255,255,.86);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 18px; }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      transition:.2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(150,209,220,.35); box-shadow: 0 0 0 6px rgba(150,209,220,.08); }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
+      border-color: rgba(150,209,220,.30);
+    }
+
+    /* LOGÓ PANEL */
+    .logo-panel{
+      padding: 22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height: 260px;
+      position:relative;
+      overflow:hidden;
+    }
+    .logo-panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(600px 240px at 50% 30%, rgba(9,114,166,.22), transparent 60%),
+                  radial-gradient(500px 240px at 70% 70%, rgba(161,0,7,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .logo-panel img{
+      position:relative;
+      max-width: 100%;
+      height:auto;
+      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+    }
+
+    /* SECTIONS */
+    section{ padding: 26px 0; }
+    .section-title{
+      font-size: 20px;
+      margin: 0 0 10px;
+      letter-spacing:.2px;
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 900px){ .grid3{ grid-template-columns:1fr; } }
+    .mini{
+      padding: 16px;
+    }
+    .mini p{
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height:1.55;
+    }
+    .kicker{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      color: rgba(150,209,220,.9);
+      margin-bottom: 10px;
+    }
+
+    /* CONTACT */
+    .contact{
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px){ .contact{ grid-template-columns:1fr; } }
+    .field{
+      padding: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+    }
+    .field b{ display:block; font-size:13px; color: rgba(255,255,255,.86); margin-bottom: 6px; }
+    .field span{ color: var(--muted); }
+
+    footer{
+      padding: 30px 0 44px;
+      color: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(255,255,255,.07);
+      margin-top: 22px;
+    }
+    .small{ font-size: 13px; }
+
+    /* smooth scroll */
+    html{ scroll-behavior:smooth; }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <strong>RacingVisionX</strong>
+      </a>
+
+      <nav class="menu">
+        <a href="#szolgaltatas">Szolgáltatás</a>
+        <a href="#miert">Miért mi?</a>
+        <a href="#kapcsolat" class="cta">Kapcsolat</a>
+      </nav>
+    </div>
+  </div>
+
+  <main id="top" class="container">
+    <div class="hero">
+      <div class="hero-grid">
+        <div class="card hero-card">
+          <span class="kicker">GOKART • ONBOARD • ÉLŐKÉP</span>
+
+          <h1>
+            <!-- TODO: EGYEDI SZÖVEG: Fő cím -->
+            Onboard élmény, azonnal a kijelzőn.
+          </h1>
+
+          <p class="lead">
+            <!-- TODO: EGYEDI SZÖVEG: Rövid leírás (1-2 mondat) -->
+            RacingVisionX: élő onboard kameraképek a váróban, és opcionális felvételmentés / utólagos letöltés –
+            pályákra tervezve, gyorsan telepíthető, skálázható rendszerrel.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="#kapcsolat">Kérek ajánlatot</a>
+            <a class="btn" href="#szolgaltatas">Hogyan működik?</a>
+          </div>
+
+          <div class="pill-row" aria-label="Fő előnyök">
+            <!-- TODO: EGYEDI SZÖVEG: 3-4 kulcsszó -->
+            <span class="pill">20+ kamera skálázható</span>
+            <span class="pill">Offline belső hálózaton is</span>
+            <span class="pill">Automatizálható indítás</span>
+            <span class="pill">Felvétel + letöltés opció</span>
+          </div>
+        </div>
+
+        <div class="card logo-panel" aria-label="RacingVisionX logó">
+          <!-- LOGÓ: tedd a logo.png fájlt az index.html mellé -->
+          <img src="logo.png" alt="RacingVisionX logó" />
+        </div>
+      </div>
+    </div>
+
+    <section id="szolgaltatas">
+      <h2 class="section-title">Szolgáltatás</h2>
+      <div class="grid3">
+        <div class="card mini">
+          <b>Élő onboard megjelenítés</b>
+          <p>
+            <!-- TODO: EGYEDI SZÖVEG -->
+            A kameraképek valós időben mennek a monitorokra / TV-kre a váróban, több nézettel és elrendezéssel.
+          </p>
+        </div>
+        <div class="card mini">
+          <b>Felvételmentés (opcionális)</b>
+          <p>
+            <!-- TODO: EGYEDI SZÖVEG -->
+            Futamonként mentés és rendszerezés, egyszerű visszakeresés – vendégeknek utólagos megvásárlás/leöltés.
+          </p>
+        </div>
+        <div class="card mini">
+          <b>Gyors telepítés</b>
+          <p>
+            <!-- TODO: E
