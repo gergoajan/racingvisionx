@@ -4,25 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RacingVisionX</title>
-  <meta name="description" content="RacingVisionX – gokart onboard élőkép és felvételrendszer pályáknak." />
-
-  <!-- Opcionális: ha lesz faviconod -->
-  <!-- <link rel="icon" href="favicon.ico" /> -->
+  <meta name="description" content="RacingVisionX – élő gokart onboard kamerarendszer pályáknak, felvételmentéssel és értékesítési opcióval." />
 
   <style>
     :root{
-      /* LOGÓHOZ ILLŐ AKCENT SZÍNEK (ha akarod, itt finomhangolhatod) */
       --bg:#05060a;
       --panel: rgba(255,255,255,.06);
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
 
-      --cyan:#96D1DC;   /* logó cyan */
-      --blue:#0972A6;   /* logó kék */
-      --red:#A10007;    /* logó piros */
-      --amber:#F7DEA7;  /* logó arany/narancs */
+      --cyan:#96D1DC;
+      --blue:#0972A6;
+      --red:#A10007;
+      --amber:#F7DEA7;
 
-      --ring: rgba(150,209,220,.35);
       --shadow: 0 18px 60px rgba(0,0,0,.55);
       --radius: 18px;
     }
@@ -56,7 +51,7 @@
       gap:12px;
     }
     .brand{
-      display:flex; align-items:center; gap:10px; min-width:200px;
+      display:flex; align-items:center; gap:10px; min-width:220px;
     }
     .brand-badge{
       width:12px; height:12px; border-radius:999px;
@@ -64,6 +59,7 @@
       box-shadow: 0 0 0 6px rgba(255,255,255,.03);
     }
     .brand strong{ letter-spacing:.4px; }
+
     .menu{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
     .menu a{
       color:var(--muted);
@@ -85,9 +81,7 @@
     }
 
     /* HERO */
-    .hero{
-      padding: 54px 0 26px;
-    }
+    .hero{ padding: 54px 0 26px; }
     .hero-grid{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
@@ -141,23 +135,6 @@
       border: 1px solid rgba(255,255,255,.08);
     }
 
-    .actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 18px; }
-    .btn{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.92);
-      transition:.2s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(150,209,220,.35); box-shadow: 0 0 0 6px rgba(150,209,220,.08); }
-    .btn.primary{
-      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
-      border-color: rgba(150,209,220,.30);
-    }
-
-    /* LOGÓ PANEL */
     .logo-panel{
       padding: 22px;
       display:flex;
@@ -181,7 +158,6 @@
       filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
     }
 
-    /* SECTIONS */
     section{ padding: 26px 0; }
     .section-title{
       font-size: 20px;
@@ -194,39 +170,8 @@
       gap: 14px;
     }
     @media (max-width: 900px){ .grid3{ grid-template-columns:1fr; } }
-    .mini{
-      padding: 16px;
-    }
-    .mini p{
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height:1.55;
-    }
-    .kicker{
-      display:inline-block;
-      font-size:12px;
-      letter-spacing:.16em;
-      text-transform: uppercase;
-      color: rgba(150,209,220,.9);
-      margin-bottom: 10px;
-    }
-
-    /* CONTACT */
-    .contact{
-      padding: 18px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 900px){ .contact{ grid-template-columns:1fr; } }
-    .field{
-      padding: 12px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 14px;
-    }
-    .field b{ display:block; font-size:13px; color: rgba(255,255,255,.86); margin-bottom: 6px; }
-    .field span{ color: var(--muted); }
+    .mini{ padding: 16px; }
+    .mini p{ margin: 8px 0 0; color: var(--muted); line-height:1.55; }
 
     footer{
       padding: 30px 0 44px;
@@ -236,7 +181,6 @@
     }
     .small{ font-size: 13px; }
 
-    /* smooth scroll */
     html{ scroll-behavior:smooth; }
   </style>
 </head>
@@ -244,7 +188,7 @@
 <body>
   <div class="nav">
     <div class="container nav-inner">
-      <a class="brand" href="#top">
+      <a class="brand" href="/index.html">
         <span class="brand-badge" aria-hidden="true"></span>
         <strong>RacingVisionX</strong>
       </a>
@@ -252,48 +196,30 @@
       <nav class="menu">
         <a href="#szolgaltatas">Szolgáltatás</a>
         <a href="#miert">Miért mi?</a>
-        <a href="#kapcsolat" class="cta">Kapcsolat</a>
+        <a href="/kapcsolat.html" class="cta">Kapcsolat</a>
       </nav>
     </div>
   </div>
 
-  <main id="top" class="container">
+  <main class="container">
     <div class="hero">
       <div class="hero-grid">
         <div class="card hero-card">
-          <span class="kicker">GOKART • ONBOARD • ÉLŐKÉP</span>
-
-          <h1>
-            <!-- TODO: EGYEDI SZÖVEG: Fő cím -->
-            Onboard élmény - élőképek - felvétel mentés és értékesítés.
-          </h1>
-
+          <h1>Onboard élmény, ami plusz bevételt termel a gokartpályádnak.</h1>
           <p class="lead">
-            <!-- TODO: EGYEDI SZÖVEG: Rövid leírás (1-2 mondat) -->
-            RacingVisionX: élő onboard kameraképek a váróban, és opcionális felvételmentés / utólagos letöltés –
-            pályákra tervezve, gyorsan telepíthető, skálázható rendszerrel.
+            A RacingVisionX élő onboard kamerarendszerével a futamok képe valós időben megjelenik a váróban,
+            a felvételek pedig automatikusan menthetők és utólag értékesíthetők a vendégeknek.
           </p>
 
-          <div class="actions">
-          <a class="btn primary"
-           href="mailto:info@racingvisionx.hu?subject=Ajánlatkérés%20-%20RacingVisionX">
-            Kérek ajánlatot
-          </a>
-
-            <a class="btn" href="#szolgaltatas">Hogyan működik?</a>
-          </div>
-
           <div class="pill-row" aria-label="Fő előnyök">
-            <!-- TODO: EGYEDI SZÖVEG: 3-4 kulcsszó -->
-            <span class="pill">20+ kamera skálázható</span>
-            <span class="pill">Offline belső hálózaton is</span>
-            <span class="pill">Automatizálható indítás</span>
-            <span class="pill">Felvétel + letöltés opció</span>
+            <span class="pill">Élő kép a váróban</span>
+            <span class="pill">Automatikus felvételmentés</span>
+            <span class="pill">Megvásárolható videók</span>
+            <span class="pill">Skálázható rendszer</span>
           </div>
         </div>
 
         <div class="card logo-panel" aria-label="RacingVisionX logó">
-          <!-- LOGÓ: tedd a logo.png fájlt az index.html mellé -->
           <img src="logo.png" alt="RacingVisionX logó" />
         </div>
       </div>
@@ -305,21 +231,54 @@
         <div class="card mini">
           <b>Élő onboard megjelenítés</b>
           <p>
-            <!-- TODO: EGYEDI SZÖVEG -->
-            A kameraképek valós időben mennek a monitorokra / TV-kre a váróban, több nézettel és elrendezéssel.
+            A gokartok fedélzeti kameraképe élőben jelenik meg a váróteremben elhelyezett kijelzőkön,
+            így a kísérők és a soron következő vendégek is részesei a futamoknak.
           </p>
         </div>
         <div class="card mini">
           <b>Felvételmentés (opcionális)</b>
           <p>
-            <!-- TODO: EGYEDI SZÖVEG -->
-            Futamonként mentés és rendszerezés, egyszerű visszakeresés – vendégeknek utólagos megvásárlás/leöltés.
+            A rendszer futamonként automatikusan menti a felvételeket, amelyeket a vendégek
+            utólag egyszerűen megvásárolhatnak és letölthetnek.
           </p>
         </div>
         <div class="card mini">
           <b>Gyors telepítés</b>
           <p>
-            <!-- TODO: E
+            Kifejezetten gokartpályákra készült: gyorsan telepíthető, nem igényel plusz személyzetet,
+            és internetkapcsolat nélkül is stabilan működik.
+          </p>
+        </div>
+      </div>
+    </section>
 
+    <section id="miert">
+      <h2 class="section-title">Miért RacingVisionX?</h2>
+      <div class="grid3">
+        <div class="card mini">
+          <b>Profi élmény</b>
+          <p>A vendégek nem csak vezetnek, hanem át is élik a futamot – ez emeli a szolgáltatás színvonalát.</p>
+        </div>
+        <div class="card mini">
+          <b>Plusz bevétel</b>
+          <p>A felvételek értékesítése új, automatizálható bevételi forrást jelent a pályának.</p>
+        </div>
+        <div class="card mini">
+          <b>Skálázhatóság</b>
+          <p>Kisebb és nagyobb pályákhoz is igazítható, akár több tucat kamera kezelésével.</p>
+        </div>
+      </div>
+    </section>
 
+    <footer class="container">
+      <div class="small">
+        © <span id="y"></span> RacingVisionX • Minden jog fenntartva
+      </div>
+    </footer>
+  </main>
 
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
