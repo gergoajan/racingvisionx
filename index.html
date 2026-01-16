@@ -3,277 +3,649 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RacingVisionX</title>
-  <meta name="description" content="RacingVisionX – élő gokart onboard kamerarendszer pályáknak, felvételmentéssel és értékesítési opcióval." />
+  <title>RacingVisionX – Onboard kamerarendszer gokart pályáknak</title>
+  <meta name="description" content="Onboard kamerarendszer gokart pályáknak: élő kép TV-ken, automatikus felvételmentés, QR-kódos videóvásárlás. Bérleti konstrukció, gyors telepítés." />
+  <meta name="theme-color" content="#0b0f17" />
 
   <style>
     :root{
-      --bg:#05060a;
-      --panel: rgba(255,255,255,.06);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-
-      --cyan:#96D1DC;
-      --blue:#0972A6;
-      --red:#A10007;
-      --amber:#F7DEA7;
-
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
+      --bg:#0b0f17;
+      --panel:#0f1626;
+      --panel2:#0d1322;
+      --text:#eaf0ff;
+      --muted:#a7b3d4;
+      --line:rgba(255,255,255,.10);
+      --accent:#7c5cff;
+      --accent2:#00d4ff;
+      --ok:#35d07f;
+      --warn:#ffcc66;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius:18px;
+      --max:1120px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(9,114,166,.25), transparent 55%),
-                  radial-gradient(900px 500px at 80% 20%, rgba(161,0,7,.22), transparent 55%),
-                  radial-gradient(900px 500px at 40% 90%, rgba(150,209,220,.18), transparent 55%),
-                  var(--bg);
       color:var(--text);
-      overflow-x:hidden;
+      background:
+        radial-gradient(900px 500px at 15% 0%, rgba(124,92,255,.22), transparent 65%),
+        radial-gradient(800px 500px at 85% 10%, rgba(0,212,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 50% 100%, rgba(124,92,255,.10), transparent 70%),
+        var(--bg);
+      line-height:1.5;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    .container{ width:min(1100px, 92vw); margin:0 auto; }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:700;
+      transition:transform .08s ease, background .2s ease, border-color .2s ease;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.18)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      border-color:rgba(124,92,255,.55);
+      background:linear-gradient(135deg, rgba(124,92,255,.95), rgba(0,212,255,.70));
+      color:#061022;
+      box-shadow: 0 10px 30px rgba(124,92,255,.25);
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      font-weight:700;
+      font-size:13px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--accent));
+      box-shadow:0 0 18px rgba(124,92,255,.6);
+    }
 
-    /* NAV */
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background:rgba(11,15,23,.62);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
     .nav{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(to bottom, rgba(5,6,10,.78), rgba(5,6,10,.35));
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
-    .nav-inner{
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0;
-      gap:12px;
+      gap:16px;
     }
     .brand{
-      display:flex; align-items:center; gap:10px; min-width:220px;
+      display:flex; align-items:center; gap:12px;
+      font-weight:900; letter-spacing:.3px;
     }
-    .brand-badge{
-      width:12px; height:12px; border-radius:999px;
-      background: conic-gradient(from 180deg, var(--cyan), var(--blue), var(--red), var(--amber), var(--cyan));
-      box-shadow: 0 0 0 6px rgba(255,255,255,.03);
-    }
-    .brand strong{ letter-spacing:.4px; }
-
-    .menu{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
-    .menu a{
+    .brand img{width:34px; height:34px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,.06)}
+    .navlinks{
+      display:flex; align-items:center; gap:18px;
       color:var(--muted);
-      padding:8px 10px;
-      border-radius:999px;
-      transition: .2s ease;
+      font-weight:800;
+      font-size:14px;
     }
-    .menu a:hover{ color:var(--text); background: rgba(255,255,255,.06); }
-    .cta{
-      padding:9px 14px !important;
-      color: rgba(255,255,255,.95) !important;
-      background: linear-gradient(90deg, rgba(150,209,220,.22), rgba(9,114,166,.22));
-      border: 1px solid rgba(150,209,220,.28);
-      box-shadow: 0 10px 30px rgba(9,114,166,.15);
-    }
-    .cta:hover{
-      border-color: rgba(150,209,220,.45);
-      box-shadow: 0 14px 40px rgba(150,209,220,.12);
-    }
+    .navlinks a{opacity:.95}
+    .navlinks a:hover{color:var(--text)}
+    .navcta{display:flex; gap:10px; align-items:center}
 
-    /* HERO */
-    .hero{ padding: 54px 0 26px; }
+    /* Hero */
+    .hero{padding:52px 0 18px}
     .hero-grid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 28px;
-      align-items:center;
+      grid-template-columns: 1.15fr .85fr;
+      gap:26px;
+      align-items:stretch;
     }
-    @media (max-width: 900px){
-      .hero-grid{ grid-template-columns:1fr; }
+    .h1{
+      font-size: clamp(34px, 4.2vw, 54px);
+      line-height:1.05;
+      margin:14px 0 14px;
+      letter-spacing:-.8px;
+    }
+    .lead{
+      color:var(--muted);
+      font-size: clamp(15px, 1.4vw, 18px);
+      max-width:58ch;
+      margin:0 0 18px;
+    }
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin:18px 0 18px}
+    .hero-points{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .tag{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
     }
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
     }
-    .hero-card{
-      padding: 26px;
-      position:relative;
-      overflow:hidden;
+    .hero-card{overflow:hidden; position:relative}
+    .hero-card img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(1.05) contrast(1.02);
+      opacity:.95;
+      min-height:340px;
     }
-    .hero-card:before{
+    .hero-card::after{
       content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(700px 220px at 30% 10%, rgba(150,209,220,.25), transparent 60%),
-                  radial-gradient(520px 200px at 85% 25%, rgba(161,0,7,.18), transparent 60%);
-      pointer-events:none;
-      filter: blur(2px);
-    }
-    .hero-card > *{ position:relative; }
-
-    h1{
-      margin: 0 0 10px;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height:1.05;
-      letter-spacing:.2px;
-    }
-    .lead{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: clamp(15px, 1.6vw, 18px);
-      line-height:1.55;
-    }
-    .pill-row{ display:flex; gap:10px; flex-wrap:wrap; margin: 16px 0 0; }
-    .pill{
-      font-size:13px;
-      color: rgba(255,255,255,.86);
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .logo-panel{
-      padding: 22px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height: 260px;
-      position:relative;
-      overflow:hidden;
-    }
-    .logo-panel:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(600px 240px at 50% 30%, rgba(9,114,166,.22), transparent 60%),
-                  radial-gradient(500px 240px at 70% 70%, rgba(161,0,7,.18), transparent 60%);
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(11,15,23,.12), rgba(11,15,23,.75));
       pointer-events:none;
     }
-    .logo-panel img{
-      position:relative;
-      max-width: 100%;
-      height:auto;
-      filter: drop-shadow(0 18px 40px rgba(0,0,0,.55));
+    .hero-metric{
+      position:absolute; left:16px; right:16px; bottom:16px;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:10px;
+      z-index:2;
     }
+    .metric{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(10,14,22,.55);
+      backdrop-filter: blur(10px);
+    }
+    .metric b{display:block; font-size:16px}
+    .metric span{color:var(--muted); font-weight:700; font-size:13px}
 
-    section{ padding: 26px 0; }
-    .section-title{
-      font-size: 20px;
-      margin: 0 0 10px;
-      letter-spacing:.2px;
+    /* Sections */
+    section{padding:42px 0}
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:20px; margin-bottom:18px;
     }
+    .section-title{margin:0; font-size:26px; letter-spacing:-.4px}
+    .section-sub{margin:0; color:var(--muted); max-width:70ch}
+
     .grid3{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      gap:14px;
     }
-    @media (max-width: 900px){ .grid3{ grid-template-columns:1fr; } }
-    .mini{ padding: 16px; }
-    .mini p{ margin: 8px 0 0; color: var(--muted); line-height:1.55; }
+    .feature{
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(15,22,38,.95), rgba(15,22,38,.65));
+    }
+    .feature .icon{
+      width:42px; height:42px; border-radius:14px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      margin-bottom:12px;
+      box-shadow:0 10px 25px rgba(0,0,0,.25);
+    }
+    .feature h3{margin:0 0 6px; font-size:16px}
+    .feature p{margin:0; color:var(--muted); font-weight:650; font-size:14px}
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    .step{
+      padding:16px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(13,19,34,.85), rgba(13,19,34,.55));
+    }
+    .step .num{
+      width:34px; height:34px; border-radius:12px;
+      display:grid; place-items:center;
+      background:linear-gradient(135deg, rgba(124,92,255,.95), rgba(0,212,255,.65));
+      color:#061022;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+    .step h4{margin:0 0 6px}
+    .step p{margin:0; color:var(--muted); font-weight:650; font-size:14px}
+
+    .pricing{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      align-items:stretch;
+    }
+    .plan{
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(15,22,38,.92), rgba(15,22,38,.62));
+      position:relative;
+      overflow:hidden;
+    }
+    .plan.popular{
+      border-color:rgba(124,92,255,.55);
+      box-shadow: 0 18px 60px rgba(124,92,255,.18);
+    }
+    .badge{
+      position:absolute; top:14px; right:14px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(124,92,255,.18);
+      color:var(--text);
+      font-weight:900;
+      font-size:12px;
+    }
+    .plan h3{margin:0 0 6px}
+    .price{font-size:30px; font-weight:950; letter-spacing:-.5px; margin:8px 0 2px}
+    .price small{font-size:13px; color:var(--muted); font-weight:800}
+    .plan p{margin:0 0 12px; color:var(--muted); font-weight:650}
+    .ul{list-style:none; padding:0; margin:12px 0 16px; display:grid; gap:10px}
+    .ul li{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-weight:700; font-size:14px}
+    .check{
+      width:18px; height:18px; border-radius:6px;
+      background:rgba(53,208,127,.14);
+      border:1px solid rgba(53,208,127,.35);
+      display:grid; place-items:center;
+      color:var(--ok);
+      flex:0 0 auto;
+      margin-top:2px;
+    }
+
+    .cta{
+      padding:22px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(600px 240px at 20% 0%, rgba(124,92,255,.22), transparent 70%),
+        radial-gradient(520px 240px at 80% 0%, rgba(0,212,255,.18), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+    }
+    .cta h3{margin:0 0 6px; font-size:18px}
+    .cta p{margin:0; color:var(--muted); font-weight:650}
+
+    .faq{
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    details{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:var(--radius);
+      padding:14px 14px;
+      background:rgba(255,255,255,.04);
+    }
+    summary{
+      cursor:pointer;
+      font-weight:900;
+      color:var(--text);
+    }
+    details p{margin:10px 0 0; color:var(--muted); font-weight:650}
+
+    /* Contact */
+    .contact{
+      display:grid; grid-template-columns:1.05fr .95fr; gap:14px;
+      align-items:stretch;
+    }
+    form{
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(15,22,38,.92), rgba(15,22,38,.62));
+    }
+    label{display:block; font-weight:900; margin:12px 0 8px}
+    input, textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:12px 12px;
+      font:inherit;
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    input:focus, textarea:focus{border-color:rgba(124,92,255,.55); box-shadow:0 0 0 4px rgba(124,92,255,.12)}
+    .form-row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .small-note{color:var(--muted); font-weight:650; font-size:13px; margin-top:10px}
+
+    .side{
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(13,19,34,.85), rgba(13,19,34,.55));
+    }
+    .side b{display:block; margin-bottom:6px}
+    .side p{margin:0 0 12px; color:var(--muted); font-weight:650}
+    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    .gallery img{
+      width:100%; height:92px; object-fit:cover;
+      border-radius:14px; border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+    }
 
     footer{
-      padding: 30px 0 44px;
-      color: rgba(255,255,255,.55);
-      border-top: 1px solid rgba(255,255,255,.07);
-      margin-top: 22px;
+      padding:26px 0 40px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      font-weight:700;
     }
-    .small{ font-size: 13px; }
+    .foot{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      flex-wrap:wrap;
+    }
+    .foot a{color:var(--muted)}
+    .foot a:hover{color:var(--text)}
 
-    html{ scroll-behavior:smooth; }
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .pricing{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .faq{grid-template-columns:1fr}
+      .contact{grid-template-columns:1fr}
+      .navlinks{display:none}
+      .form-row{grid-template-columns:1fr}
+      .hero-card img{min-height:280px}
+    }
   </style>
 </head>
 
 <body>
-  <div class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="/index.html">
-        <span class="brand-badge" aria-hidden="true"></span>
-        <strong>RacingVisionX</strong>
-      </a>
+  <header class="header">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="RacingVisionX">
+          <img src="assets/logo.svg" alt="RacingVisionX logo" />
+          <span>RacingVisionX</span>
+        </a>
 
-      <nav class="menu">
-        <a href="#szolgaltatas">Szolgáltatás</a>
-        <a href="#miert">Miért mi?</a>
-        <a href="/kapcsolat.html" class="cta">Kapcsolat</a>
-      </nav>
+        <nav class="navlinks" aria-label="Fő navigáció">
+          <a href="#features">Mi ez?</a>
+          <a href="#how">Hogyan működik</a>
+          <a href="#pricing">Árazás</a>
+          <a href="#faq">GYIK</a>
+          <a href="#contact">Kapcsolat</a>
+        </nav>
+
+        <div class="navcta">
+          <a class="btn" href="#pricing">Csomagok</a>
+          <a class="btn primary" href="#contact">Demo / Ajánlat</a>
+        </div>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <main class="container">
-    <div class="hero">
-      <div class="hero-grid">
-        <div class="card hero-card">
-          <h1>Onboard élmény, élőben.</h1>
-          <p class="lead">
-            A RacingVisionX élő onboard kamerarendszerével a futamok képe valós időben megjelenik a váróban,
-            a felvételek pedig automatikusan menthetők és utólag értékesíthetők a vendégeknek.
-          </p>
+  <main id="top">
+    <div class="container">
+      <section class="hero" aria-label="Hero">
+        <div class="hero-grid">
+          <div>
+            <div class="pill"><span class="dot"></span> Offline pályás rendszer • QR-kódos videóeladás • TV-s megjelenítés</div>
+            <h1 class="h1">Onboard kamerarendszer gokart pályáknak – élmény + extra bevétel.</h1>
+            <p class="lead">
+              A vendég felveszi a sisakot, te bekapcsolod a rendszert, a futam végén pedig QR-kóddal megveheti és letöltheti a saját videóját.
+              Stabil, gyorsan telepíthető, bérleti konstrukcióban.
+            </p>
 
-          <div class="pill-row" aria-label="Fő előnyök">
-            <span class="pill">Élő kép a váróban</span>
-            <span class="pill">Automatikus felvételmentés</span>
-            <span class="pill">Megvásárolható videók</span>
-            <span class="pill">Skálázható rendszer</span>
+            <div class="hero-actions">
+              <a class="btn primary" href="#contact">Kérek demót</a>
+              <a class="btn" href="#how">Mutasd a működést</a>
+            </div>
+
+            <div class="hero-points">
+              <span class="tag">Automatikus felvételmentés</span>
+              <span class="tag">OBS / TV fal kompatibilis</span>
+              <span class="tag">Internet nélkül is működik</span>
+              <span class="tag">Gyors beüzemelés</span>
+            </div>
+          </div>
+
+          <div class="card hero-card" aria-label="Bemutató kép">
+            <img src="assets/hero.jpg" alt="Onboard kamerarendszer gokart pályán" />
+            <div class="hero-metric">
+              <div class="metric">
+                <b>0–2 perc</b>
+                <span>futamindítás előkészítés</span>
+              </div>
+              <div class="metric">
+                <b>+ bevétel</b>
+                <span>videó eladás QR-kóddal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Mit kapsz a RacingVisionX-szel?</h2>
+            <p class="section-sub">Egy olyan “plug & play” élménycsomagot, ami a vendégnek menő, a pályának pedig mérhető plusz érték.</p>
           </div>
         </div>
 
-        <div class="card logo-panel" aria-label="RacingVisionX logó">
-          <img src="logo.png" alt="RacingVisionX logó" />
+        <div class="grid3">
+          <div class="feature">
+            <div class="icon">🎥</div>
+            <h3>Onboard élő kép</h3>
+            <p>Élő kép több TV-n, rendezett elrendezésben (OBS), futamnév / versenyzőnév megjelenítéssel.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">💾</div>
+            <h3>Automatikus rögzítés</h3>
+            <p>Minden futam mentésre kerül kameránként, egységes mappastruktúrában, könnyen visszakereshetően.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">📱</div>
+            <h3>QR-kódos vásárlás</h3>
+            <p>Futam után a vendég QR-t olvas, fizet, és azonnal letölti a videóját. Minimális személyzet-igény.</p>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section id="how">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Hogyan működik a gyakorlatban?</h2>
+            <p class="section-sub">A cél: a pályán ne legyen “szívás” – reggel indítod, napközben pedig magától megy.</p>
+          </div>
+          <a class="btn" href="#contact">Kérj bejárást</a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <h4>Rendszer indítás</h4>
+            <p>Laptop + egy ikon / start script – a szolgáltatások elindulnak.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h4>Kamerák csatlakoznak</h4>
+            <p>Onboard egységek felmennek a pálya Wi-Fi-jére, és elindítják a streamet.</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h4>Élő kép TV-n</h4>
+            <p>OBS-ben megjelenik az összes kamera, feliratokkal és rendezett layouttal.</p>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <h4>Mentés + QR</h4>
+            <p>Futam után automatikus mentés és QR-kód – a vendég vásárol és letölt.</p>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="cta">
+          <div>
+            <h3>Demo pályára szabva</h3>
+            <p>Megnézzük a helyszínt, a TV-ket, a Wi-Fi-t, és kapsz egy konkrét telepítési tervet.</p>
+          </div>
+          <a class="btn primary" href="#contact">Kérek ajánlatot</a>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Árazás</h2>
+            <p class="section-sub">Bérleti modell: egyszeri telepítés + havi díj. A csomagok a pálya méretéhez és a kijelzők számához igazíthatók.</p>
+          </div>
+        </div>
+
+        <div class="pricing">
+          <div class="plan">
+            <h3>Starter</h3>
+            <div class="price">Egyedi <small>/hó</small></div>
+            <p>Kisebb pályáknak, gyors belépő.</p>
+            <ul class="ul">
+              <li><span class="check">✓</span> Alap TV megjelenítés</li>
+              <li><span class="check">✓</span> Automatikus mentés</li>
+              <li><span class="check">✓</span> Alap admin/státusz</li>
+              <li><span class="check">✓</span> Helyszíni beüzemelés</li>
+            </ul>
+            <a class="btn" href="#contact">Érdekel</a>
+          </div>
+
+          <div class="plan popular">
+            <div class="badge">Legnépszerűbb</div>
+            <h3>Pro</h3>
+            <div class="price">Egyedi <small>/hó</small></div>
+            <p>Teljes élmény + stabil napi üzem.</p>
+            <ul class="ul">
+              <li><span class="check">✓</span> Több TV / jobb layout</li>
+              <li><span class="check">✓</span> QR-kódos videóvásárlás</li>
+              <li><span class="check">✓</span> Futam- és névkezelés</li>
+              <li><span class="check">✓</span> Logolás + támogatás</li>
+            </ul>
+            <a class="btn primary" href="#contact">Kérek demót</a>
+          </div>
+
+          <div class="plan">
+            <h3>Enterprise</h3>
+            <div class="price">Egyedi <small>/hó</small></div>
+            <p>Nagy pályák, több kamera, extra automatizmus.</p>
+            <ul class="ul">
+              <li><span class="check">✓</span> Skálázás 10–20 kamera felé</li>
+              <li><span class="check">✓</span> Haladó admin / monitoring</li>
+              <li><span class="check">✓</span> Egyedi integrációk</li>
+              <li><span class="check">✓</span> SLA jellegű támogatás</li>
+            </ul>
+            <a class="btn" href="#contact">Beszéljünk</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">GYIK</h2>
+            <p class="section-sub">A leggyakoribb kérdések pályatulajdonosoktól.</p>
+          </div>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>Internet kell hozzá?</summary>
+            <p>Nem feltétlen. A rendszer belső hálózaton is stabilan működik. Internet csak akkor kell, ha külső fizetés/letöltés funkciót szeretnél online.</p>
+          </details>
+          <details>
+            <summary>Mennyi idő telepíteni?</summary>
+            <p>Helyszíni adottságtól függ, de cél a gyors beüzemelés: Wi-Fi/antennák, kábelezés, OBS layout, tesztfutam.</p>
+          </details>
+          <details>
+            <summary>Mi van, ha megszakad egy kamera?</summary>
+            <p>A kamerák újracsatlakozása és a gyors helyreállás kiemelt cél. A logolás segít, hogy gyorsan megtaláljuk az okát.</p>
+          </details>
+          <details>
+            <summary>Hogyan lesz ebből plusz bevétel?</summary>
+            <p>Futam után QR-kóddal a vendég megveheti a videót (pl. 990 Ft). A folyamat automatizálható, így nem kell plusz ember.</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Kapcsolat / Demo</h2>
+            <p class="section-sub">Írj, és küldök egy rövid kérdéssort + javasolt csomagot a pályádhoz.</p>
+          </div>
+        </div>
+
+        <div class="contact">
+          <form method="post" action="https://formspree.io/f/xxxxxx">
+            <div class="form-row">
+              <div>
+                <label for="name">Név</label>
+                <input id="name" name="name" autocomplete="name" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+
+            <label for="track">Pálya / helyszín</label>
+            <input id="track" name="track" placeholder="Pl. FlashKart, Budapest" />
+
+            <label for="message">Üzenet</label>
+            <textarea id="message" name="message" placeholder="Kamera db, TV-k száma, mikor lenne jó a demo, stb."></textarea>
+
+            <div style="height:12px"></div>
+            <button class="btn primary" type="submit">Küldés</button>
+            <div class="small-note">
+              * Az űrlap küldéshez állítsuk be a végleges megoldást (Cloudflare Worker email, vagy Formspree).
+            </div>
+          </form>
+
+          <div class="side">
+            <b>Gyors infó</b>
+            <p>Ha küldesz pár adatot (TV-k száma, kamera igény, pálya hossza, Wi-Fi jelenlegi állapota), 1 körben összerakok egy javaslatot.</p>
+            <b>Galéria (cseréld saját képekre)</b>
+            <div class="gallery">
+              <img src="assets/gallery-1.jpg" alt="RacingVisionX kép 1" />
+              <img src="assets/gallery-2.jpg" alt="RacingVisionX kép 2" />
+              <img src="assets/gallery-3.jpg" alt="RacingVisionX kép 3" />
+            </div>
+            <div style="height:12px"></div>
+            <a class="btn" href="#pricing">Csomagok megtekintése</a>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="foot container">
+          <div>© <span id="y"></span> RacingVisionX • Minden jog fenntartva</div>
+          <div style="display:flex; gap:14px; flex-wrap:wrap">
+            <a href="#top">Vissza a tetejére</a>
+            <a href="#contact">Kapcsolat</a>
+          </div>
+        </div>
+      </footer>
     </div>
-
-    <section id="szolgaltatas">
-      <h2 class="section-title">Szolgáltatás</h2>
-      <div class="grid3">
-        <div class="card mini">
-          <b>Élő onboard megjelenítés</b>
-          <p>
-            A gokartok fedélzeti kameraképe élőben jelenik meg a váróteremben elhelyezett kijelzőkön,
-            így a kísérők és a soron következő vendégek is részesei a futamoknak.
-          </p>
-        </div>
-        <div class="card mini">
-          <b>Felvételmentés (opcionális)</b>
-          <p>
-            A rendszer futamonként automatikusan menti a felvételeket, amelyeket a vendégek
-            utólag egyszerűen megvásárolhatnak és letölthetnek.
-          </p>
-        </div>
-        <div class="card mini">
-          <b>Gyors telepítés</b>
-          <p>
-            Kifejezetten gokartpályákra készült: gyorsan telepíthető, nem igényel plusz személyzetet, stabilan működik.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="miert">
-      <h2 class="section-title">Miért RacingVisionX?</h2>
-      <div class="grid3">
-        <div class="card mini">
-          <b>Profi élmény</b>
-          <p>A vendégek nem csak vezetnek, hanem át is élik a futamot – ez emeli a szolgáltatás színvonalát.</p>
-        </div>
-        <div class="card mini">
-          <b>Plusz bevétel</b>
-          <p>A felvételek értékesítése új, automatizálható bevételi forrást jelenthet a pályának.</p>
-        </div>
-        <div class="card mini">
-          <b>Skálázhatóság</b>
-          <p>Kisebb és nagyobb pályákhoz is igazítható, akár több tucat kamera kezelésével.</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="container">
-      <div class="small">
-        © <span id="y"></span> RacingVisionX • Minden jog fenntartva
-      </div>
-    </footer>
   </main>
 
   <script>
@@ -281,5 +653,3 @@
   </script>
 </body>
 </html>
-
-
