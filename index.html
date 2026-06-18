@@ -50,7 +50,7 @@
   </div>
 </section>
 
-<section id="how" class="section">
+<section id="how" class="section reveal">
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Egyszerű folyamat</p>
@@ -86,7 +86,7 @@
   </div>
 </section>
 
-<section id="benefits" class="section dark-section">
+<section id="benefits" class="section dark-section reveal-left">
   <div class="container split">
     <div>
       <p class="eyebrow">Pályatulajdonosoknak</p>
@@ -121,7 +121,7 @@
   </div>
 </section>
 
-<section id="gallery" class="section">
+<section id="gallery" class="section reveal-right">
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Látványterv</p>
@@ -144,7 +144,7 @@
   </div>
 </section>
 
-<section class="section image-text-section">
+<section class="section image-text-section reveal-left">
   <div class="container split">
     <div class="image-card">
       <img src="assets/images/onboard.png" alt="Onboard gokart felvétel verseny közben">
@@ -160,7 +160,7 @@
   </div>
 </section>
 
-<section class="section dark-section">
+<section class="section dark-section reveal-right">
   <div class="container split">
     <div>
       <p class="eyebrow">Admin felület</p>
@@ -176,7 +176,7 @@
   </div>
 </section>
   
-<section class="section process-section">
+<section class="section process-section reveal">
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Futam után</p>
@@ -193,7 +193,7 @@
   </div>
 </section>
 
-<section id="contact" class="section cta-section">
+<section id="contact" class="section cta-section reveal">
   <div class="container cta-box">
     <h2>Készen állsz arra, hogy új élményt adj a vendégeidnek?</h2>
     <p>Kérj demót, és megmutatjuk, hogyan működhet a RacingVisionX a te gokartpályádon.</p>
@@ -206,6 +206,26 @@
     <p>© RacingVisionX – Onboard kamerarendszer gokartpályáknak</p>
   </div>
 </footer>
+
+<script>
+const revealItems = document.querySelectorAll(
+  ".reveal, .reveal-left, .reveal-right, .step-card, .benefit-card, .gallery-item, .image-card, .timeline div"
+);
+
+function revealOnScroll() {
+  revealItems.forEach((item) => {
+    const top = item.getBoundingClientRect().top;
+    const trigger = window.innerHeight * 0.88;
+
+    if (top < trigger) {
+      item.classList.add("active");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
+</script>
 
 <a href="#top" class="back-to-top" aria-label="Vissza a tetejére">↑</a>
 </body>
